@@ -65,5 +65,7 @@ update_cidr DSHIELD https://www.dshield.org/block.txt "24"
 update_cidr TOR https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.2.3.4 "32"
 update_cidr BLOCKLIST-DE http://lists.blocklist.de/lists/all.txt "32"
 
+cd /home/blacklist
+
 git commit -a --author="Fernando Hallberg <fernando@webgenium.com.br>" --message="Blacklist Update"
 git push
