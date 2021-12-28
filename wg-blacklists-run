@@ -11,9 +11,10 @@
 BLACKLIST=/home/blacklist/webgenium-blacklist.rst
 
 WGET=/usr/bin/wget
+AGGREGATE=/usr/local/bin/aggregate
 
 echo "ip firewall address-list" > $BLACKLIST
-
+echo "remove [find list=webgenium-blacklist]" >> $BLACKLIST
 
 update()
 {
@@ -28,14 +29,17 @@ update()
 
 	$WGET -q -O$tmpf $url
 
-	cat $tmpf | grep "^[0-9]" | cut -f1 -d"$delim" | while read ip;
-	do
-		echo "add list=webgenium-blacklist address=$ip comment=$lista" >> $BLACKLIST
+	cat $tmpf | grep "^[0-9]" | cut -f1 -d"$delim" | grep -v ":"
+       	#| while read ip;
+	#
+	#do
+#		echo "add list=webgenium-blacklist address=$ip comment=$lista" >> $BLACKLIST
 
-	done
+#	done
 
 	rm -f $tmpf
 }
+
 update_cidr()
 {
 	lista=$1
@@ -44,26 +48,33 @@ update_cidr()
 
 	tmpf=$(mktemp)
 
-	echo "remove [find list=webgenium-blacklist comment=$lista]" >> $BLACKLIST
+#	echo "remove [find list=webgenium-blacklist comment=$lista]" >> $BLACKLIST
 
 	$WGET -q -O$tmpf $url
 
-	cat $tmpf | grep "^[0-9]" | awk '{ print $1 }' | while read ip;
+	cat $tmpf | grep "^[0-9]" | awk '{ print $1 }' | grep -v ":" | while read ip;
 	do
-		echo "add list=webgenium-blacklist address=$ip/$cidr comment=$lista" >> $BLACKLIST
-
+		echo $ip/$cidr
+#		echo "add list=webgenium-blacklist address=$ip/$cidr comment=$lista" >> $BLACKLIST
+#
 	done
 
 	rm -f $tmpf
 }
 
-update DSHIELD-DROP http://www.spamhaus.org/drop/drop.txt " "
-update DSHIELD-EDROP http://www.spamhaus.org/drop/edrop.txt " "
-update GREENSNOW https://blocklist.greensnow.co/greensnow.txt
+blacktmp=$(mktemp)
+update DSHIELD-DROP http://www.spamhaus.org/drop/drop.txt " " > $blacktmp
+update DSHIELD-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
+update GREENSNOW https://blocklist.greensnow.co/greensnow.txt >> $blacktmp
 
-update_cidr DSHIELD https://www.dshield.org/block.txt "24" 
-update_cidr TOR https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.2.3.4 "32"
-update_cidr BLOCKLIST-DE http://lists.blocklist.de/lists/all.txt "32"
+update_cidr DSHIELD https://www.dshield.org/block.txt "24" >> $blacktmp
+update_cidr TOR https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.2.3.4 "32" >> $blacktmp
+update_cidr BLOCKLIST-DE http://lists.blocklist.de/lists/all.txt "32" >> $blacktmp
+
+cat $blacktmp | $AGGREGATE | while read ip;
+do
+		echo "add list=webgenium-blacklist address=$ip" >> $BLACKLIST
+done
 
 cd /home/blacklist
 
