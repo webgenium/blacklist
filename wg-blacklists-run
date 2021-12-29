@@ -25,7 +25,7 @@ update()
 
 	tmpf=$(mktemp)
 
-	echo "remove [find list=webgenium-blacklist comment=$lista]" >> $BLACKLIST
+#	echo "remove [find list=webgenium-blacklist comment=$lista]" >> $BLACKLIST
 
 	$WGET -q -O$tmpf $url
 
