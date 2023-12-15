@@ -63,15 +63,15 @@ update_cidr()
 }
 
 blacktmp=$(mktemp)
-update DSHIELD-DROP http://www.spamhaus.org/drop/drop.txt " " > $blacktmp
-update DSHIELD-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
+update SPAMHAUS-DROP http://www.spamhaus.org/drop/drop.txt " " > $blacktmp
+update SPAMHAUS-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
 update GREENSNOW https://blocklist.greensnow.co/greensnow.txt >> $blacktmp
 
 update_cidr DSHIELD https://www.dshield.org/block.txt "24" >> $blacktmp
 update_cidr TOR https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.2.3.4 "32" >> $blacktmp
 update_cidr BLOCKLIST-DE http://lists.blocklist.de/lists/all.txt "32" >> $blacktmp
 
-cat $blacktmp | $AGGREGATE -p 32| while read ip;
+cat $blacktmp | $AGGREGATE -p 32 | while read ip;
 do
 		echo "add list=webgenium-blacklist address=$ip" >> $BLACKLIST
 done
