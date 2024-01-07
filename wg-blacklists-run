@@ -77,7 +77,7 @@ do
 		echo "add list=webgenium-blacklist address=$ip" >> $BLACKLIST
 done
 
-$WGET -q -O- https://danger.rulez.sk/projects/bruteforceblocker/blist.php | awk '{ print $1; }' | while read ip;
+$WGET -q -O- https://danger.rulez.sk/projects/bruteforceblocker/blist.php | awk '{ print $1; }' | grep "^[0-9]" | while read ip;
 do
 		echo "add list=webgenium-bfb address=$ip" >> $BLACKLIST
 done
