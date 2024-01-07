@@ -16,6 +16,7 @@ AGGREGATE=/usr/local/bin/aggregate
 echo "ip firewall address-list" > $BLACKLIST
 echo "remove [find list=webgenium-blacklist]" >> $BLACKLIST
 echo "remove [find list=webgenium-bfb]" >> $BLACKLIST
+echo "remove [find list=webgenium-ciarmy]" >> $BLACKLIST
 
 update()
 {
@@ -77,9 +78,14 @@ do
 		echo "add list=webgenium-blacklist address=$ip" >> $BLACKLIST
 done
 
-$WGET -q -O- https://danger.rulez.sk/projects/bruteforceblocker/blist.php | awk '{ print $1; }' | grep "^[0-9]" | while read ip;
+$WGET -q -O- https://danger.rulez.sk/projects/bruteforceblocker/blist.php | awk '{ print $1; }' | grep "^[0-9]" | $AGGREGATE -p 32 | while read ip;
 do
 		echo "add list=webgenium-bfb address=$ip" >> $BLACKLIST
+done
+
+$WGET -q -O- http://www.ciarmy.com/list/ci-badguys.txt | awk '{ print $1; }' | grep "^[0-9]" | $AGGREGATE -p 32 | while read ip;
+do
+		echo "add list=webgenium-ciarmy address=$ip" >> $BLACKLIST
 done
 
 cd /home/blacklist
