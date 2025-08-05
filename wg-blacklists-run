@@ -17,7 +17,6 @@ echo "ip firewall address-list" > $BLACKLIST
 echo "remove [find list=webgenium-blacklist]" >> $BLACKLIST
 echo "remove [find list=webgenium-bfb]" >> $BLACKLIST
 echo "remove [find list=webgenium-ciarmy]" >> $BLACKLIST
-#echo "remove [find list=firehol]" >> $BLACKLIST
 
 
 update()
@@ -70,7 +69,7 @@ blacktmp=$(mktemp)
 update SPAMHAUS-DROP http://www.spamhaus.org/drop/drop.txt " " > $blacktmp
 update SPAMHAUS-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
 update GREENSNOW https://blocklist.greensnow.co/greensnow.txt >> $blacktmp
-update FIREHOL https://raw.githubusercontent.com/ktsaou/blocklist-ipsets/master/firehol_level1.netset >> $blacktmp
+#update FIREHOL https://raw.githubusercontent.com/ktsaou/blocklist-ipsets/master/firehol_level1.netset >> $blacktmp
 
 update_cidr DSHIELD https://www.dshield.org/block.txt "24" >> $blacktmp
 update_cidr TOR https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.2.3.4 "32" >> $blacktmp
