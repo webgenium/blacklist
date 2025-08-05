@@ -1,0 +1,48 @@
+#
+#   DShield.org Recommended Block List 
+#    (c) $year DShield.org
+#   some rights reserved. Details http://creativecommons.org/licenses/by-nc-sa/2.5/
+#   use on your own risk. No warranties implied.
+#   primary URL: https://feeds.dshield.org/block.txt
+#     PGP Sign.: https://feeds.dshield.org/block.txt.asc
+#
+#   comments: systems@isc.sans.edu
+#    updated: 2025-08-05T19:15:20.469124
+#   
+#    This list summarizes the top 20 attacking class C (/24) subnets
+#   over the last three days. The number of 'attacks' indicates the 
+#   number of targets reporting scans from this subnet.
+#
+#
+#    Columns (tab delimited):
+#
+#    (1) start of netblock  
+#    (2) end of netblock
+#    (3) subnet (/24 for class C)
+#    (4) number of targets scanned
+#    (5) name of Network 
+#    (6) Country
+#    (7) contact email address
+#
+#    If a range is assigned to multiple users, the first one is listed. 
+#     
+65.49.1.0	65.49.1.255	24	365	HURRICANE	US	abuse@he.net
+64.62.156.0	64.62.156.255	24	355	HURRICANE	US	abuse@he.net
+176.65.148.0	176.65.148.255	24	355	-	-	-
+185.242.226.0	185.242.226.255	24	354	AS49870-BV	NL	abuse@westcall.ru
+167.94.145.0	167.94.145.255	24	353	CENSYS-ARIN-02	US	None
+194.180.48.0	194.180.48.255	24	352	-	-	-
+195.184.76.0	195.184.76.255	24	349	EAJ-GLOBAL	GB	>>UNKNOWN<<
+68.69.186.0	68.69.186.255	24	348	DEDIOUTLET-NETWORKS	US	None
+193.163.125.0	193.163.125.255	24	348	INTERNET-MEASUREMENT	GB	>>UNKNOWN<<
+167.94.138.0	167.94.138.255	24	347	CENSYS-ARIN-01	US	None
+64.62.197.0	64.62.197.255	24	347	HURRICANE	US	abuse@he.net
+206.168.34.0	206.168.34.255	24	346	-	-	-
+104.234.115.0	104.234.115.255	24	343	DAILY	TR	abuse@orbittelekom.com
+185.224.128.0	185.224.128.255	24	343	AS49870-BV	NL	abuse@westcall.ru
+205.210.31.0	205.210.31.255	24	342	GOOGLE-CLOUD-PLATFORM	US	None
+198.235.24.0	198.235.24.255	24	342	GOOGLE-CLOUD-PLATFORM	US	None
+185.132.53.0	185.132.53.255	24	341	KREMER-AS	DE	>>UNKNOWN<<
+213.209.143.0	213.209.143.255	24	341	RAPIDNET-DE Haunstetter Str. 19	DE	abuse@exklusiv.de
+45.135.194.0	45.135.194.255	24	341	-	-	-
+196.251.87.0	196.251.87.255	24	340	-	-	-

@@ -67,7 +67,7 @@ update_cidr()
 
 blacktmp=$(mktemp)
 update SPAMHAUS-DROP http://www.spamhaus.org/drop/drop.txt " " > $blacktmp
-update SPAMHAUS-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
+#update SPAMHAUS-EDROP http://www.spamhaus.org/drop/edrop.txt " " >> $blacktmp
 update GREENSNOW https://blocklist.greensnow.co/greensnow.txt >> $blacktmp
 #update FIREHOL https://raw.githubusercontent.com/ktsaou/blocklist-ipsets/master/firehol_level1.netset >> $blacktmp
 
