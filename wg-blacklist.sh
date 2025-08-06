@@ -62,12 +62,47 @@ while IFS=";" read -r LIST_NAME URL; do
 
 done < "$CONFIG_FILE"
 
-# 🔄 Agregando todos os IPs em um único arquivo
-echo "➤ Agregando todas as listas em $FINAL_OUTPUT..."
+# 🔄 Concatenar todas as listas normalizadas
+echo "➤ Concatenando listas normalizadas..."
 
 cat "$PROCESS_DIR"/*.txt \
-    | sort -u \
-    | aggregate -q > "$FINAL_OUTPUT"
+    | sort -u > "$FINAL_OUTPUT"
+
+# ❌ Lista de bogons a excluir
+BOGONS=(
+    "0.0.0.0/8"
+    "10.0.0.0/8"
+    "100.64.0.0/10"
+    "127.0.0.0/8"
+    "169.254.0.0/16"
+    "172.16.0.0/12"
+    "192.0.0.0/24"
+    "192.0.2.0/24"
+    "192.168.0.0/16"
+    "198.18.0.0/15"
+    "198.51.100.0/24"
+    "203.0.113.0/24"
+    "224.0.0.0/4"
+    "240.0.0.0/4"
+    "255.255.255.255/32"
+)
+
+echo "➤ Removendo bogons da lista..."
+
+BOGON_TEMP=$(mktemp)
+printf "%s\n" "${BOGONS[@]}" > "$BOGON_TEMP"
+
+grep -v -f "$BOGON_TEMP" "$FINAL_OUTPUT" > "${FINAL_OUTPUT}.filtered"
+mv "${FINAL_OUTPUT}.filtered" "$FINAL_OUTPUT"
+rm "$BOGON_TEMP"
+
+echo "✅ Bogons removidos."
+
+# ✅ Agregando com aggregate após remoção de bogons
+echo "➤ Agregando com aggregate..."
+
+cat "$FINAL_OUTPUT" | aggregate -q > "${FINAL_OUTPUT}.tmp"
+mv "${FINAL_OUTPUT}.tmp" "$FINAL_OUTPUT"
 
 echo "✅ Arquivo final agregado: $FINAL_OUTPUT"
 
@@ -86,5 +121,11 @@ echo "➤ Gerando script MikroTik em $MIKROTIK_SCRIPT..."
 
 echo "✅ Script MikroTik gerado: $MIKROTIK_SCRIPT"
 
+# 📝 Commit e push automático no Git
+echo "➤ Enviando mudanças para o Git..."
+
 git commit -a --author="Fernando Hallberg <fernando@webgenium.com.br>" --message="Blacklist Update"
 git push
+
+echo "✅ Atualização enviada para o repositório Git."
+
