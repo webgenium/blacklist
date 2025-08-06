@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="wg-blacklists.conf"
+CONFIG_FILE="wg-blacklist.conf"
 BLACKLIST_DIR="./blacklists"
 PROCESS_DIR="./processamento"
 FINAL_OUTPUT="wg-blacklist.txt"
@@ -27,14 +27,24 @@ while IFS=";" read -r LIST_NAME URL; do
 
     if [[ "$NO_DOWNLOAD" -eq 0 ]]; then
         echo "Baixando lista: $LIST_NAME"
-        TEMP_FILE=$(mktemp)
 
-        if curl -fsSL "$URL" -o "$TEMP_FILE"; then
-            echo "  ➤ Download realizado. Substituindo arquivo."
-            mv "$TEMP_FILE" "$RAW_FILE"
+        if [[ "$URL" == rsync://* ]]; then
+            # Baixar via rsync
+            if rsync -z "$URL" "$RAW_FILE"; then
+                echo "  ➤ Download via rsync concluído."
+            else
+                echo "  ⚠️  Falha ao baixar via rsync: $URL"
+            fi
         else
-            echo "  ⚠️  Falha ao baixar $URL. Mantendo arquivo atual."
-            rm -f "$TEMP_FILE"
+            # Baixar via curl
+            TEMP_FILE=$(mktemp)
+            if curl -fsSL "$URL" -o "$TEMP_FILE"; then
+                echo "  ➤ Download via HTTP concluído."
+                mv "$TEMP_FILE" "$RAW_FILE"
+            else
+                echo "  ⚠️  Falha ao baixar $URL. Mantendo arquivo atual."
+                rm -f "$TEMP_FILE"
+            fi
         fi
     fi
 
@@ -82,7 +92,6 @@ BOGONS=(
     "198.18.0.0/15"
     "198.51.100.0/24"
     "203.0.113.0/24"
-    "224.0.0.0/4"
     "240.0.0.0/4"
     "255.255.255.255/32"
 )
@@ -98,7 +107,7 @@ rm "$BOGON_TEMP"
 
 echo "✅ Bogons removidos."
 
-# ✅ Agregando com aggregate após remoção de bogons
+# ✅ Agregando com aggregate via pipe
 echo "➤ Agregando com aggregate..."
 
 cat "$FINAL_OUTPUT" | aggregate -q > "${FINAL_OUTPUT}.tmp"
