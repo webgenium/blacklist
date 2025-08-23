@@ -1,11 +1,13 @@
 #!/bin/bash
 
-CONFIG_FILE="wg-blacklist.conf"
-BLACKLIST_DIR="./blacklists"
-PROCESS_DIR="./processamento"
-FINAL_OUTPUT="wg-blacklist.txt"
-MIKROTIK_SCRIPT="webgenium-blacklist.rsc"
+BASEDIR=/home/blacklist
+CONFIG_FILE="${BASEDIR}/wg-blacklist.conf"
+BLACKLIST_DIR="${BASEDIR}/blacklists"
+PROCESS_DIR="${BASEDIR}/processamento"
+FINAL_OUTPUT="${BASEDIR}/wg-blacklist.txt"
+MIKROTIK_SCRIPT="${BASEDIR}/webgenium-blacklist.rsc"
 ADDRESS_LIST_NAME="webgenium-blacklist"
+AGGREGATE=/usr/local/bin/aggregate
 NO_DOWNLOAD=0
 
 # Verifica opção -n (no download)
@@ -110,7 +112,7 @@ echo "✅ Bogons removidos."
 # ✅ Agregando com aggregate via pipe
 echo "➤ Agregando com aggregate..."
 
-cat "$FINAL_OUTPUT" | aggregate -q > "${FINAL_OUTPUT}.tmp"
+cat "$FINAL_OUTPUT" | ${AGGREGATE} -q > "${FINAL_OUTPUT}.tmp"
 mv "${FINAL_OUTPUT}.tmp" "$FINAL_OUTPUT"
 
 echo "✅ Arquivo final agregado: $FINAL_OUTPUT"
@@ -132,9 +134,12 @@ echo "✅ Script MikroTik gerado: $MIKROTIK_SCRIPT"
 
 # 📝 Commit e push automático no Git
 echo "➤ Enviando mudanças para o Git..."
+pushd ${BASEDIR}
 
 git commit -a --author="Fernando Hallberg <fernando@webgenium.com.br>" --message="Blacklist Update"
 git push
+
+popd
 
 echo "✅ Atualização enviada para o repositório Git."
 
