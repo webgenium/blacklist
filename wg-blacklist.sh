@@ -32,7 +32,9 @@ while IFS=";" read -r LIST_NAME URL; do
 
         if [[ "$URL" == rsync://* ]]; then
             # Baixar via rsync
-            if rsync -z "$URL" "$RAW_FILE"; then
+	    URLDOWNLOAD=$(echo $URL | cut -d '/' -f3-)
+	    echo "  rsync -z ${URLDOWNLOAD} ${RAW_FILE}"
+            if rsync -z "$URLDOWNLOAD" "$RAW_FILE"; then
                 echo "  ➤ Download via rsync concluído."
             else
                 echo "  ⚠️  Falha ao baixar via rsync: $URL"
