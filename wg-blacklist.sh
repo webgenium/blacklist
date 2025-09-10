@@ -19,6 +19,10 @@ fi
 
 mkdir -p "$BLACKLIST_DIR" "$PROCESS_DIR" "$WHITELIST_DIR"
 
+echo "➤ Limpando a pasta de processamento dos arquivos."
+
+rm -f "${PROCESS_DIR}/*"
+
 # Regex para IPs com ou sem CIDR
 IP_REGEX='([0-9]{1,3}\.){3}[0-9]{1,3}(/[0-9]{1,2})?'
 
@@ -29,24 +33,34 @@ while IFS=";" read -r LIST_NAME URL; do
     OUT_FILE="${PROCESS_DIR}/${LIST_NAME}.txt"
 
     if [[ "$NO_DOWNLOAD" -eq 0 ]]; then
-        echo "Baixando lista: $LIST_NAME"
-
-        if [[ "$URL" == rsync://* ]]; then
-            URLDOWNLOAD=$(echo $URL | cut -d '/' -f3-)
-            echo "  rsync -z ${URLDOWNLOAD} ${RAW_FILE}"
-            if rsync -z "$URLDOWNLOAD" "$RAW_FILE"; then
-                echo "  ➤ Download via rsync concluído."
-            else
-                echo "  ⚠️  Falha ao baixar via rsync: $URL"
+        DOWNLOAD=1
+        if [[ -f "$RAW_FILE" ]]; then
+            # Verifica se o arquivo tem menos de 12h
+            if find "$RAW_FILE" -mmin -720 >/dev/null 2>&1; then
+                DOWNLOAD=0
+                echo "⏩ Pulando download de $LIST_NAME (arquivo atualizado há menos de 12h)."
             fi
-        else
-            TEMP_FILE=$(mktemp)
-            if curl -fsSL "$URL" -o "$TEMP_FILE"; then
-                echo "  ➤ Download via HTTP concluído."
-                mv "$TEMP_FILE" "$RAW_FILE"
+        fi
+
+        if [[ "$DOWNLOAD" -eq 1 ]]; then
+            echo "Baixando lista: $LIST_NAME"
+            if [[ "$URL" == rsync://* ]]; then
+                URLDOWNLOAD=$(echo $URL | cut -d '/' -f3-)
+                echo "  rsync -z ${URLDOWNLOAD} ${RAW_FILE}"
+                if rsync -z "$URLDOWNLOAD" "$RAW_FILE"; then
+                    echo "  ➤ Download via rsync concluído."
+                else
+                    echo "  ⚠️  Falha ao baixar via rsync: $URL"
+                fi
             else
-                echo "  ⚠️  Falha ao baixar $URL. Mantendo arquivo atual."
-                rm -f "$TEMP_FILE"
+                TEMP_FILE=$(mktemp)
+                if curl -fsSL "$URL" -o "$TEMP_FILE"; then
+                    echo "  ➤ Download via HTTP concluído."
+                    mv "$TEMP_FILE" "$RAW_FILE"
+                else
+                    echo "  ⚠️  Falha ao baixar $URL. Mantendo arquivo atual."
+                    rm -f "$TEMP_FILE"
+                fi
             fi
         fi
     fi
