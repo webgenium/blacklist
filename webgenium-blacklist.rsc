@@ -16461,16 +16461,11 @@ add list=webgenium-blacklist address=74.114.148.0/22
 add list=webgenium-blacklist address=74.118.81.174/32
 add list=webgenium-blacklist address=74.120.121.136/32
 add list=webgenium-blacklist address=74.123.104.17/32
-add list=webgenium-blacklist address=74.125.150.4/32
-add list=webgenium-blacklist address=74.125.150.132/31
-add list=webgenium-blacklist address=74.125.150.134/32
 add list=webgenium-blacklist address=74.125.212.6/32
 add list=webgenium-blacklist address=74.125.215.161/32
 add list=webgenium-blacklist address=74.125.215.162/31
 add list=webgenium-blacklist address=74.125.215.164/31
 add list=webgenium-blacklist address=74.125.215.166/32
-add list=webgenium-blacklist address=74.125.218.164/30
-add list=webgenium-blacklist address=74.125.218.168/31
 add list=webgenium-blacklist address=74.125.224.55/32
 add list=webgenium-blacklist address=74.125.224.63/32
 add list=webgenium-blacklist address=74.131.28.136/32

@@ -23,6 +23,24 @@ echo "➤ Limpando a pasta de processamento dos arquivos."
 
 rm -f "${PROCESS_DIR}/*"
 
+# ✅ Executar scripts auxiliares (whitelists, atualizações externas, etc)
+SCRIPTS_DIR="${BASEDIR}/scripts"
+
+if [[ -d "$SCRIPTS_DIR" ]]; then
+    echo "➤ Executando scripts auxiliares em ${SCRIPTS_DIR}..."
+    for script in "$SCRIPTS_DIR"/*; do
+        if [[ -x "$script" && -f "$script" ]]; then
+            echo "   ▶ Executando: $script"
+            "$script"
+        else
+            echo "   ⚠️ Ignorando $script (não é executável)"
+        fi
+    done
+else
+    echo "ℹ️ Nenhuma pasta de scripts encontrada em ${SCRIPTS_DIR}. Pulando etapa."
+fi
+
+
 # Regex para IPs com ou sem CIDR
 IP_REGEX='([0-9]{1,3}\.){3}[0-9]{1,3}(/[0-9]{1,2})?'
 
