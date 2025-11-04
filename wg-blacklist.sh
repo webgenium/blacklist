@@ -54,9 +54,12 @@ while IFS=";" read -r LIST_NAME URL; do
         DOWNLOAD=1
         if [[ -f "$RAW_FILE" ]]; then
             # Verifica se o arquivo tem menos de 12h
-            if find "$RAW_FILE" -mmin -720 >/dev/null 2>&1; then
-                DOWNLOAD=0
-                echo "⏩ Pulando download de $LIST_NAME (arquivo atualizado há menos de 12h)."
+	    file_age_hours=$(( ( $(date +%s) - $(stat -c %Y "$RAW_FILE") ) / 3600 ))
+	    if (( file_age_hours < 12 )); then
+	        DOWNLOAD=0
+	        echo "⏩ Pulando download de $LIST_NAME (arquivo atualizado há ${file_age_hours}h)."
+	    else
+                echo "📥 Arquivo antigo (${file_age_hours}h). Download será feito novamente."
             fi
         fi
 
