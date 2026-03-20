@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEST="/home/blacklist/whitelists/google_special_crawlers_ipv4.txt"
+DEST="/home/fernando/dev/blacklist/whitelists/google_special_crawlers_ipv4.txt"
 TMP_FILE=$(mktemp)
 
 # Baixar e filtrar os prefixos IPv4

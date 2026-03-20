@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASEDIR=/home/blacklist
+BASEDIR=/home/fernando/dev/blacklist
 CONFIG_FILE="${BASEDIR}/wg-blacklist.conf"
 BLACKLIST_DIR="${BASEDIR}/blacklists"
 PROCESS_DIR="${BASEDIR}/processamento"

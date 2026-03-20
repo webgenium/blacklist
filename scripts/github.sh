@@ -3,7 +3,7 @@
 set -u
 
 URL="https://api.github.com/meta"
-DEST="/home/blacklist/whitelists/github.txt"
+DEST="/home/fernando/dev/blacklist/whitelists/github.txt"
 TMP_JSON="$(mktemp)"
 TMP_OUT="$(mktemp)"
 
