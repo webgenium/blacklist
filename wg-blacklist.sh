@@ -8,7 +8,7 @@ FINAL_OUTPUT="${BASEDIR}/wg-blacklist.txt"
 MIKROTIK_SCRIPT="${BASEDIR}/webgenium-blacklist.rsc"
 ADDRESS_LIST_NAME="webgenium-blacklist"
 WHITELIST_DIR="${BASEDIR}/whitelists"
-AGGREGATE=/usr/local/bin/aggregate
+AGGREGATE=/usr/bin/aggregate
 NO_DOWNLOAD=0
 
 # Verifica opção -n (no download)
