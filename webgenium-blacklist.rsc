@@ -13372,14 +13372,6 @@ add list=webgenium-blacklist address=52.90.155.15/32
 add list=webgenium-blacklist address=52.91.1.143/32
 add list=webgenium-blacklist address=52.91.15.149/32
 add list=webgenium-blacklist address=52.91.48.81/32
-add list=webgenium-blacklist address=52.103.163.29/32
-add list=webgenium-blacklist address=52.103.163.30/32
-add list=webgenium-blacklist address=52.103.167.13/32
-add list=webgenium-blacklist address=52.103.167.14/31
-add list=webgenium-blacklist address=52.103.174.28/32
-add list=webgenium-blacklist address=52.103.174.30/31
-add list=webgenium-blacklist address=52.103.179.29/32
-add list=webgenium-blacklist address=52.103.179.31/32
 add list=webgenium-blacklist address=52.128.42.110/32
 add list=webgenium-blacklist address=52.128.42.113/32
 add list=webgenium-blacklist address=52.128.42.114/32
