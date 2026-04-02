@@ -1,4 +1,6 @@
 blacklists/
+whitelists/
 tmp/
 processamento/
 backup/
+log/
